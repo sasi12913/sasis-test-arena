@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SASI's Test Arena | UPSC CSE Prelims Ecosystem</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
+  
+  <!-- Chart.js CDN for Analytics Dashboard -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- jsPDF CDN for Advanced Multi-Page Reports -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Bar Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-icon">
+          <img src="logo.jpg" alt="SASI's Test Arena Logo">
+        </div>
+        <div class="brand-text">
+          <h1>SASI's Test Arena</h1>
+          <p>Train Like a Future Civil Servant</p>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Light/Dark Theme">
+          🌙
+        </button>
+        
+        <!-- Streak Display -->
+        <div class="header-streak-badge" title="Daily Streak Count">
+          🔥 <span id="headerStreakCount">0</span> Day Streak
+        </div>
+        
+        <!-- Aspirant Info Profile -->
+        <div class="user-profile">
+          <div class="user-avatar">A</div>
+          <span id="aspirantName">Aspirant Profile</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Menu (UPSC Prep Ecosystem Tabs) -->
+    <nav class="ecosystem-nav">
+      <button class="nav-tab active" data-tab="tabCommandCenter">🏠 Command Center</button>
+      <button class="nav-tab" data-tab="tabPracticeArena">✍️ Practice Arena</button>
+      <button class="nav-tab" data-tab="tabPYQPortal">📜 PYQ Portal</button>
+      <button class="nav-tab" data-tab="tabMistakes">📓 Mistake Notebook</button>
+      <button class="nav-tab" data-tab="tabRevision">🗓️ Revision Planner</button>
+      <button class="nav-tab" data-tab="tabAnalytics">📊 Analytics & Mastery</button>
+      <button class="nav-tab" data-tab="tabLeaderboard">🏆 Leaderboard</button>
+      <button class="nav-tab" data-tab="tabFutureScope">🚀 Advanced Prep</button>
+    </nav>
+
+    <!-- Main Content Swapping Panels -->
+    <main class="main-content">
+      
+      <!-- TAB 1: UPSC COMMAND CENTER (DASHBOARD) -->
+      <section id="tabCommandCenter" class="tab-panel active">
+        <!-- Welcome banner -->
+        <div class="card welcome-banner-card">
+          <div class="welcome-text-side">
+            <h2>Welcome Back, Officer-in-Training</h2>
+            <p>"Success is not final, failure is not fatal: it is the courage to continue that counts." — Winston Churchill</p>
+            <div class="banner-buttons-row">
+              <button id="btnContinuePrep" class="btn btn-primary">Continue Daily Practice ➔</button>
+            </div>
+          </div>
+          <div class="welcome-badge-side">
+            <div id="badgeDisplayContainer" class="dashboard-badge-celebration">
+              <div class="badge-ring">🥇</div>
+              <p style="font-size: 0.8rem; font-weight: bold; margin-top: 0.5rem; text-align: center;" id="activeBadgeName">UPSC Aspirant</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Command Grid Metrics -->
+        <div class="command-grid">
+          
+          <!-- Daily Goal Meter -->
+          <div class="card command-card">
+            <h3>Today's Goal</h3>
+            <div class="radial-goal-container">
+              <div class="goal-ring-wrapper">
+                <svg class="goal-ring" width="120" height="120">
+                  <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
+                  <circle id="goalRingProgress" class="ring-fill" cx="60" cy="60" r="50" style="stroke-dasharray: 314; stroke-dashoffset: 314;"></circle>
+                </svg>
+                <div class="goal-text-overlay">
+                  <span id="goalCompletedCount">0</span>/<span id="goalTargetCount">20</span>
+                  <p>Questions</p>
+                </div>
+              </div>
+            </div>
+            <p style="text-align: center; font-size: 0.82rem; margin-top: 0.5rem; color: var(--text-secondary);" id="goalProgressMessage">
+              0% of your daily challenge completed.
+            </p>
+          </div>
+
+          <!-- Readiness Index Index -->
+          <div class="card command-card">
+            <h3>Readiness Score</h3>
+            <div class="readiness-gauge-wrapper">
+              <div id="dashboardReadinessScore" class="readiness-score-number">0</div>
+              <span id="dashboardReadinessStage" class="badge badge-info">Beginner</span>
+            </div>
+            <div class="readiness-progress-track">
+              <div id="dashboardReadinessBar" class="readiness-progress-fill" style="width: 0%;"></div>
+            </div>
+            <p style="font-size: 0.78rem; text-align: center; color: var(--text-secondary); margin-top: 0.75rem;">
+              Qualification probability estimated from mock consistency.
+            </p>
+          </div>
+
+          <!-- Quick Stats summary -->
+          <div class="card command-card">
+            <h3>Arena Performance</h3>
+            <div class="dashboard-stats-summary-list">
+              <div class="dash-stat-row">
+                <span>Total Solved</span>
+                <strong id="dashTotalSolved">0 Qs</strong>
+              </div>
+              <div class="dash-stat-row">
+                <span>Accuracy</span>
+                <strong id="dashAccuracy">0%</strong>
+              </div>
+              <div class="dash-stat-row">
+                <span>Current Streak</span>
+                <strong id="dashStreak">0 Days</strong>
+              </div>
+              <div class="dash-stat-row">
+                <span>Revision Due</span>
+                <strong id="dashRevisionCount" style="color: var(--color-not-answered);">0 Qs</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Strong / Weak Topic summary -->
+          <div class="card command-card">
+            <h3>Subject Competency</h3>
+            <div class="dashboard-competency-card">
+              <div class="competency-item strong">
+                <span class="competency-label">Strongest Syllabus Area</span>
+                <strong id="dashStrongestSubject">None</strong>
+                <p id="dashStrongestAcc">No data logged</p>
+              </div>
+              <div class="competency-item weak" style="margin-top: 1rem;">
+                <span class="competency-label">Weakest Syllabus Area</span>
+                <strong id="dashWeakestSubject">None</strong>
+                <p id="dashWeakestAcc" style="color: var(--color-not-answered);">No data logged</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Secondary Command Row: Daily challenge & Weekly Grand Test -->
+        <div class="command-row-secondary">
+          <div class="card daily-challenge-banner">
+            <div class="challenge-info">
+              <h4>🔥 Daily Micro-Challenge</h4>
+              <p>Solve 5 standard UPSC-level questions in under 5 minutes. Maintain your streak and test your focus.</p>
+            </div>
+            <button id="btnStartDailyChallenge" class="btn btn-primary">Start Daily Challenge</button>
+          </div>
+
+          <div class="card daily-challenge-banner grand-test-banner">
+            <div class="challenge-info">
+              <h4>🏆 Weekly Grand Test</h4>
+              <p>Take our full-length 50-question diagnostic exam. Tracks readiness indicators and qualifications.</p>
+            </div>
+            <button id="btnStartWeeklyGrand" class="btn btn-outline" style="border-color: var(--accent-gold); color: var(--accent-gold);">Launch Grand Test</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: PRACTICE ARENA (TEST SETUP & RUN) -->
+      <section id="tabPracticeArena" class="tab-panel">
+        
+        <!-- Active Test Configurator view -->
+        <div id="testSetupPanel" class="card test-setup-box">
+          <h2 style="font-family: var(--font-serif); color: var(--accent-gold); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; text-align: center;">
+            TEST SERIES CONFIGURATOR
+          </h2>
+          
+          <div class="setup-form-grid">
+            <!-- Subject Selector -->
+            <div class="form-group">
+              <label for="selectSubject">Syllabus Subject Focus</label>
+              <select id="selectSubject" class="form-control">
+                <option value="Mixed">Mixed Syllabus Test (Core Static)</option>
+                <option value="Full Length">Full Length Test (All Subjects)</option>
+                <option value="Polity">Indian Polity & Governance</option>
+                <option value="Economy">Indian Economy & Development</option>
+                <option value="Geography">Physical & Indian Geography</option>
+                <option value="Environment">Environment, Ecology & Climate</option>
+                <option value="History">History of India & Indian Culture</option>
+                <option value="Science">Science & Technology</option>
+              </select>
+            </div>
+
+            <!-- Difficulty type -->
+            <div class="form-group">
+              <label>Difficulty Tier</label>
+              <div class="radio-card-row">
+                <label class="radio-card selected">
+                  <input type="radio" name="selectDifficulty" value="Standard" checked>
+                  <div class="radio-card-content">
+                    <strong>Standard Level</strong>
+                    <p>NCERT foundations, direct factual questions, beginner to intermediate syllabus checks.</p>
+                  </div>
+                </label>
+                <label class="radio-card">
+                  <input type="radio" name="selectDifficulty" value="UPSC">
+                  <div class="radio-card-content">
+                    <strong>UPSC Level</strong>
+                    <p>Statement-based, assertion-reason, elimination options, and current affairs integrations.</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Question count -->
+            <div class="form-group">
+              <label for="selectQuestionCount">Syllabus Question Volume</label>
+              <select id="selectQuestionCount" class="form-control">
+                <option value="10">10 Questions (Quick Review)</option>
+                <option value="20">20 Questions (Standard Drill)</option>
+                <option value="30">30 Questions</option>
+                <option value="50">50 Questions (Half Mock)</option>
+                <option value="100">100 Questions (Full Mock)</option>
+                <option value="custom">Custom Question Count</option>
+              </select>
+              
+              <!-- Custom Count Input -->
+              <div id="customCountWrapper" class="custom-count-input-wrapper hidden" style="margin-top: 0.8rem;">
+                <input type="number" id="inputCustomCount" min="1" max="150" placeholder="Enter custom count (1-150)" class="form-control">
+              </div>
+            </div>
+
+          </div>
+
+          <div style="margin-top: 2rem; display: flex; justify-content: center;">
+            <button id="btnStartConfiguredTest" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem; box-shadow: var(--shadow-gold);">
+              Initialize Mock Session ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Active Exam Console panel (Starts hidden, shown on test start) -->
+        <div id="examConsoleWorkspace" class="exam-workspace-layout hidden">
+          <!-- Left Question Box -->
+          <div class="card question-panel">
+            <div class="question-header">
+              <div>
+                <span id="activeQuestionSubject" class="question-badge">Polity</span>
+                <span id="activeQuestionTopic" style="font-size: 0.82rem; font-weight: 600; margin-left: 0.5rem; color: var(--text-secondary);">Fundamental Rights</span>
+                <span id="activeQuestionSubtopic" style="font-size: 0.78rem; font-weight: 500; margin-left: 0.5rem; padding: 0.15rem 0.4rem; background-color: var(--bg-tertiary); border-radius: 4px; color: var(--accent-gold);">Article 19</span>
+              </div>
+              <span id="activeQuestionMarks" class="question-marks">Marks: +2.0 | Negative: -0.66</span>
+            </div>
+
+            <div class="question-body">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3 id="activeQuestionNumber" class="question-number-title">Question 1 of 50</h3>
+                <span id="autoSaveIndicator" style="font-size: 0.7rem; color: var(--color-answered); font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+                  ● Auto-saved
+                </span>
+              </div>
+              
+              <!-- Question Text -->
+              <p id="activeQuestionText" class="question-text">Loading question statement...</p>
+              
+              <!-- Question Statements (For statement-based) -->
+              <ol id="activeQuestionStatementsList" class="question-statements hidden">
+                <!-- Dynamically populated -->
+              </ol>
+              
+              <div id="statementsSelectionText" class="statements-selection-text hidden">
+                Which of the statements given above is/are correct?
+              </div>
+
+              <!-- Options (A, B, C, D) -->
+              <div id="optionsContainer" class="options-list">
+                <!-- Options injected dynamically -->
+              </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="exam-actions-bar">
+              <div class="actions-left">
+                <button id="btnMarkReview" class="btn btn-outline">
+                  📍 Mark for Review
+                </button>
+                <button id="btnClearResponse" class="btn btn-danger">
+                  🧹 Clear Response
+                </button>
+              </div>
+              <div class="actions-right">
+                <button id="btnPrevQuestion" class="btn btn-secondary">
+                  ◀ Previous
+                </button>
+                <button id="btnSaveNext" class="btn btn-primary">
+                  Save & Next ▶
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Sidebar -->
+          <div class="exam-sidebar">
+            <!-- Timer Card -->
+            <div class="card timer-card">
+              <span class="timer-label">Remaining Time</span>
+              <div id="examTimer" class="timer-value">02:00:00</div>
+            </div>
+
+            <!-- palette Navigator Card -->
+            <div class="card palette-card">
+              <div class="palette-header">Question Palette</div>
+              <div id="paletteGrid" class="palette-grid">
+                <!-- Palette buttons dynamically created -->
+              </div>
+              <div class="palette-legend">
+                <div class="legend-item"><span class="legend-indicator unvisited"></span><span>Unvisited</span></div>
+                <div class="legend-item"><span class="legend-indicator not-answered"></span><span>Unanswered</span></div>
+                <div class="legend-item"><span class="legend-indicator answered"></span><span>Answered</span></div>
+                <div class="legend-item"><span class="legend-indicator marked"></span><span>Marked</span></div>
+                <div class="legend-item" style="grid-column: span 2;">
+                  <span class="legend-indicator marked-answered"></span><span>Answered & Marked</span>
+                </div>
+              </div>
+            </div>
+
+            <button id="btnSubmitTest" class="btn btn-success" style="width: 100%; font-size: 1rem; padding: 0.8rem;">
+              📥 Submit Answer Sheet
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 3: PYQ PORTAL -->
+      <section id="tabPYQPortal" class="tab-panel">
+        <div class="card">
+          <h2 style="font-family: var(--font-serif); color: var(--accent-gold); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+            Official Past Year Papers Portal
+          </h2>
+          <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">
+            Resolve authentic UPSC civil services GS Paper-I questions. Filter by year, subject, or topic to check your standard alignment.
+          </p>
+
+          <div class="pyq-filters-container">
+            <div class="pyq-filter-group">
+              <label for="selectPYQYear">Filter by Year</label>
+              <select id="selectPYQYear" class="form-control">
+                <option value="All">All Years (2018–2025)</option>
+                <option value="2024">2024 Prelims</option>
+                <option value="2023">2023 Prelims</option>
+                <option value="2022">2022 Prelims</option>
+                <option value="2021">2021 Prelims</option>
+                <option value="2020">2020 Prelims</option>
+              </select>
+            </div>
+
+            <div class="pyq-filter-group">
+              <label for="selectPYQSubject">Filter by Subject</label>
+              <select id="selectPYQSubject" class="form-control">
+                <option value="All">All Subjects</option>
+                <option value="Polity">Polity & Governance</option>
+                <option value="Economy">Economy</option>
+                <option value="Geography">Geography</option>
+                <option value="Environment">Environment & Ecology</option>
+                <option value="History">History & Culture</option>
+                <option value="Science">Science & Technology</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem;">
+            <button id="btnStartPYQTest" class="btn btn-primary" style="padding: 0.8rem 2.5rem;">
+              Launch PYQ Session ➔
+            </button>
+          </div>
+
+          <!-- PYQ Table summary of questions -->
+          <div style="margin-top: 2rem;">
+            <h3 style="font-family: var(--font-heading); margin-bottom: 1rem; font-size: 1.1rem;">Available PYQ Library Index</h3>
+            <div class="history-table-wrapper">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th>Question ID</th>
+                    <th>Year</th>
+                    <th>Subject</th>
+                    <th>Topic</th>
+                    <th>Concept Mapping Mapped</th>
+                  </tr>
+                </thead>
+                <tbody id="pyqTableBody">
+                  <!-- Loaded dynamically from questions.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 4: MY MISTAKE NOTEBOOK -->
+      <section id="tabMistakes" class="tab-panel">
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <h2 style="font-family: var(--font-serif); color: var(--accent-gold);">My Mistake Notebook</h2>
+            <button id="btnRetestMistakes" class="btn btn-outline" style="border-color: var(--color-not-answered); color: var(--color-not-answered);">
+              ✍️ Retest Incorrect Questions
+            </button>
+          </div>
+          
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+            Your personal UPSC knowledge vault. Every incorrect mock question is automatically logged here. Review topic explanations and re-solve them.
+          </p>
+
+          <!-- Search and Filter Bar -->
+          <div class="mistake-search-row">
+            <input type="text" id="searchMistakes" placeholder="Search mistakes by keyword or topic..." class="form-control" style="flex: 1;">
+            <select id="filterMistakesSubject" class="form-control" style="max-width: 200px;">
+              <option value="All">All Subjects</option>
+              <option value="Polity">Polity</option>
+              <option value="Economy">Economy</option>
+              <option value="Geography">Geography</option>
+              <option value="Environment">Environment</option>
+              <option value="History">History</option>
+              <option value="Science">Science & Tech</option>
+            </select>
+          </div>
+
+          <!-- Mistake List Wrapper -->
+          <div id="noMistakesMsg" class="flex-center" style="flex-direction: column; padding: 3rem 0; gap: 1rem;">
+            <div style="font-size: 3.5rem;">📓</div>
+            <p style="color: var(--text-secondary); font-weight: 500;">No mistakes recorded! Keep solving mocks.</p>
+          </div>
+
+          <div id="mistakesListContainer" class="mistakes-list-container hidden">
+            <!-- Mistake cards injected dynamically -->
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 5: SMART REVISION PLANNER -->
+      <section id="tabRevision" class="tab-panel">
+        <div class="card">
+          <h2 style="font-family: var(--font-serif); color: var(--accent-gold); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+            Smart Revision Scheduler
+          </h2>
+          <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">
+            AI schedules revision plans tailored to your weakest subtopics and mistake notebook histories. Select a plan to generate your review agenda.
+          </p>
+
+          <!-- Select plan length -->
+          <div class="revision-plans-select-grid">
+            <div class="revision-plan-card" data-plan="7">
+              <h3>7-Day Plan</h3>
+              <p>Crash revision targetting your immediate top 5 weak subtopics. High intensity.</p>
+              <span class="plan-label">Tactical review</span>
+            </div>
+            <div class="revision-plan-card" data-plan="15">
+              <h3>15-Day Plan</h3>
+              <p>Balanced review plan scheduling weak items first followed by moderate concepts and practice sets.</p>
+              <span class="plan-label">Standard pacing</span>
+            </div>
+            <div class="revision-plan-card" data-plan="30">
+              <h3>30-Day Plan</h3>
+              <p>Comprehensive revision covering entire syllabus divisions, spacing out subject mocks and mistake review loops.</p>
+              <span class="plan-label">Thorough consolidation</span>
+            </div>
+          </div>
+
+          <!-- Current Revision Plan status -->
+          <div id="activeRevisionPlanWrapper" class="active-revision-plan-box hidden" style="margin-top: 2.5rem; border-top: 1px dashed var(--border-color); padding-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+              <h3 id="activePlanTitle" style="font-family: var(--font-heading); color: var(--text-primary);">Your Active 7-Day Revision Agenda</h3>
+              <button id="btnResetRevisionPlan" class="btn btn-outline" style="padding: 0.35rem 0.8rem; font-size: 0.8rem;">Change Plan</button>
+            </div>
+            
+            <div class="plan-timeline-grid" id="planTimelineGrid">
+              <!-- Timeline nodes injected dynamically -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 6: ANALYTICS & TOPIC MASTERY -->
+      <section id="tabAnalytics" class="tab-panel">
+        
+        <!-- Multi-test history charts -->
+        <div class="results-grid-layout" style="margin-bottom: 2rem;">
+          <div class="card">
+            <h3 style="font-family: var(--font-heading); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+              Score & Readiness Index Trend
+            </h3>
+            <div style="position: relative; width:100%; height:260px;">
+              <canvas id="scoreTrendChartCanvas"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="font-family: var(--font-heading); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+              Accuracy & Attempts Trend
+            </h3>
+            <div style="position: relative; width:100%; height:260px;">
+              <canvas id="accuracyTrendChartCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Topic Mastery scores grid -->
+        <div class="card" style="margin-bottom: 2rem;">
+          <h2 style="font-family: var(--font-serif); color: var(--accent-gold); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">
+            Topic Mastery Matrix
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1.5rem;">
+            Mastery percentages computed across individual syllabus concepts. Build competency above 75% to achieve prelims readiness.
+          </p>
+
+          <div class="mastery-subject-grid" id="masterySubjectGrid">
+            <!-- Subject folders with topic mastery bars injected dynamically -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 7: LEADERBOARD -->
+      <section id="tabLeaderboard" class="tab-panel">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+            <h2 style="font-family: var(--font-serif); color: var(--accent-gold);">Aspirants Leaderboard</h2>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <input type="checkbox" id="leaderboardPrivacyToggle" checked style="accent-color: var(--accent-gold); width:18px; height:18px; cursor:pointer;">
+              <label for="leaderboardPrivacyToggle" style="font-size:0.8rem; font-weight:500; cursor:pointer;">Show My Profile</label>
+            </div>
+          </div>
+          
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+            Healthy, privacy-friendly mock competition. Compare weekly and monthly question completion volumes and accuracy rates with other mock takers.
+          </p>
+
+          <!-- Leaderboard table -->
+          <div class="history-table-wrapper">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Aspirant Username</th>
+                  <th>Questions Solved</th>
+                  <th>Avg Accuracy %</th>
+                  <th>UPSC Readiness</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboardTableBody">
+                <!-- Injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 8: PREP ECOSYSTEM (ADVANCED PLANNERS) -->
+      <section id="tabFutureScope" class="tab-panel">
+        <div class="card">
+          <h2 style="font-family: var(--font-serif); color: var(--accent-gold); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; text-align: center;">
+            UPSC CSE ADVANCED WORKSPACES
+          </h2>
+          <p style="color: var(--text-secondary); text-align: center; margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Future integration modules designed to support aspirants from GS Paper-I Prelims up to direct IAS Interview simulations.
+          </p>
+
+          <div class="scalability-grid">
+            <div class="scalability-card disabled">
+              <span class="scalability-status">COMING SOON</span>
+              <h4>✍️ Mains Answer Writing Evaluation</h4>
+              <p>Submit scan files of your GS Mains answers. Receive line-by-line model answers and rubrics analysis.</p>
+            </div>
+
+            <div class="scalability-card disabled">
+              <span class="scalability-status">COMING SOON</span>
+              <h4>🧠 CSAT Mock Console</h4>
+              <p>Practice reading comprehension, logical reasoning, and basic quantitative math with 2.5 hours timers.</p>
+            </div>
+
+            <div class="scalability-card disabled">
+              <span class="scalability-status">COMING SOON</span>
+              <h4>📝 Essay Sandbox Evaluator</h4>
+              <p>Type complete essay models. Diagnostic feedback on structure, vocabulary, coherence, and citations.</p>
+            </div>
+
+            <div class="scalability-card disabled">
+              <span class="scalability-status">COMING SOON</span>
+              <h4>🎙️ AI Interview Simulator</h4>
+              <p>Voice-based administrative interview simulation matching your DAF (Detailed Application Form) records.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN: RESULTS VIEW (Shown when test completes) -->
+      <section id="resultsScreen" class="screen">
+        
+        <!-- Results Hero -->
+        <div class="card results-header-card">
+          <div class="results-header-grid">
+            <div class="results-heading">
+              <h2 id="resultsMockTitle">Test Session Evaluated</h2>
+              <p id="resultsMockSub">Performance report for SASI's Test Arena mock run</p>
+              <div style="margin-top: 1.5rem; display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                <button id="btnDownloadPDF" class="btn btn-primary" style="background-color: var(--accent-gold); color: #000; box-shadow: none;">
+                  📥 Download PDF Report Card
+                </button>
+                <button id="btnResultsBackHome" class="btn btn-outline" style="border-color: #cbd5e1; color: white;">
+                  🏠 Return to Command Center
+                </button>
+              </div>
+            </div>
+            
+            <div class="score-display-radial">
+              <div class="radial-score-box">
+                <div style="text-align: center;">
+                  <span id="finalScoreVal" class="radial-score-num">0.00</span>
+                  <div class="radial-score-label">Marks / 100</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="diagnostic-stats-column">
+              <div class="diagnostic-item">
+                <span>Readiness Score</span>
+                <strong id="readinessScoreVal">0 / 100</strong>
+              </div>
+              <div class="diagnostic-item">
+                <span>Readiness Stage</span>
+                <strong id="readinessStageBadge">Beginner</strong>
+              </div>
+              <div class="diagnostic-item">
+                <span>Predicted AIR Range</span>
+                <strong id="predictedAIRVal">AIR 1000+</strong>
+              </div>
+              <div class="diagnostic-item">
+                <span>Qualification Prob.</span>
+                <strong id="predictedQualificationProb">0%</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Cards row -->
+        <div class="stats-cards-row">
+          <div class="card stat-metric-card correct">
+            <h4>Correct Questions</h4>
+            <p id="statCorrect">0 Qs</p>
+          </div>
+          <div class="card stat-metric-card incorrect">
+            <h4>Incorrect Questions</h4>
+            <p id="statIncorrect">0 Qs</p>
+          </div>
+          <div class="card stat-metric-card accuracy">
+            <h4>Accuracy</h4>
+            <p id="statAccuracy">0%</p>
+          </div>
+          <div class="card stat-metric-card unattempted">
+            <h4>Attempt Rate</h4>
+            <p id="statAttempts">0%</p>
+          </div>
+        </div>
+
+        <!-- Subject bars and radar charts -->
+        <div class="results-grid-layout">
+          <div class="card">
+            <h3 style="font-family: var(--font-heading); margin-bottom: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+              Subject Metrics
+            </h3>
+            <div class="subject-performance-section" id="resultsSubjectBarsContainer">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="card analytics-chart-box">
+            <h3 style="font-family: var(--font-heading); margin-bottom: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+              Syllabus Coverage Chart
+            </h3>
+            <div style="position: relative; width:100%; height:260px;">
+              <canvas id="resultsComparisonChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weak / Strong conceptual cards -->
+        <div class="conceptual-blocks-grid">
+          <div class="card concept-category-card strong">
+            <h4>💚 Strong Areas</h4>
+            <div id="strongConceptList" class="concept-pill-list"></div>
+          </div>
+          <div class="card concept-category-card moderate">
+            <h4>💛 Moderate Areas</h4>
+            <div id="moderateConceptList" class="concept-pill-list"></div>
+          </div>
+          <div class="card concept-category-card weak">
+            <h4>❤️ Weak Areas</h4>
+            <div id="weakConceptList" class="concept-pill-list"></div>
+          </div>
+        </div>
+
+        <!-- Book recommender & Revision Plan -->
+        <div class="revision-layout-grid">
+          <div class="card">
+            <h3 style="font-family: var(--font-heading); margin-bottom: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+              Suggested Reference Booklist
+            </h3>
+            <div id="bookRecommendationsContainer">
+              <!-- Dynamically recommendations -->
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="font-family: var(--font-heading); margin-bottom: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+              Top 5 Priority Topics to Revise
+            </h3>
+            <ol id="revisionPlanList" class="revision-plan-list"></ol>
+          </div>
+        </div>
+
+        <!-- AI mentor feedback -->
+        <div class="ai-mentor-card">
+          <div class="ai-mentor-header">
+            <div class="ai-mentor-icon">🤖</div>
+            <span>AI Mentor Performance Coach Report</span>
+          </div>
+          <p id="aiMentorText" class="ai-mentor-text"></p>
+          <ul id="aiMentorPoints" class="ai-mentor-points"></ul>
+        </div>
+
+        <!-- Questions review details -->
+        <div class="review-answers-section">
+          <h3 class="review-answers-title">Question-by-Question Review</h3>
+          <div id="reviewQuestionsContainer"></div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2026 SASI's Test Arena. Powered by Antigravity AI Question Engine.</p>
+    </footer>
+
+  </div>
+
+  <!-- Include Scripts -->
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
