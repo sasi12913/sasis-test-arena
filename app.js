@@ -10,8 +10,8 @@ let timerInterval = null;
 let testHistory = [];
 let isMistakeRetestSession = false;
 
-// Generate unique candidate profile name
-const aspirantName = "Aspirant #" + Math.floor(1000 + Math.random() * 9000);
+// Candidate profile name
+const aspirantName = "SasiVardhan";
 
 // Core Screens & Panels
 const resultsScreen = document.getElementById('resultsScreen');
